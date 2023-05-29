@@ -38,10 +38,14 @@ The format is simple:
 			// "ColorDodge", "Reflect", "Glow", "Overlay", "Difference", "Negation",
 			// "Lighten", "Darken", "Screen", "Xor"
 
+			// layer opacity, 0-255
+			"opacity": uint8,
+			// layer visibility
+			"visible": bool,
 			// layer width, in pixels (normally matches document width)
 			"width": int,
 			// layer height, in pixels (normally matches document height)
-			"width": int,
+			"height": int,
 			// MIME type of the image used for storing this layer (see "base64" below)
 			// the plugin saves to "image/png", theoretically it may be "image/jpeg" etc.
 			"mimeType": "<mimetype>",
