@@ -18,6 +18,7 @@ The format is simple:
 
 ```js
 // it is an UTF-8 encoded JSON file (with no comments of course)
+// fields ordering may vary, that's normal for JSON
 {
 	// array of strings, reserved to list used extensions, in case the format ever needs any;
 	// as of now, should be empty
@@ -26,6 +27,14 @@ The format is simple:
 	"width": int,
 	// document height, in pixels
 	"height": int,
+
+	// DPU unit - "Pixel", "Inch", "Centimeter", unrecognized/missing one defaults to inch
+	"dpuUnit": "<dpuunit>",
+	// dpu, x-scale; optional, defaults to 96.0; must be >0.0 if specified
+	"dpuX": double,
+	// dpu, y-scale; optional, defaults to 96.0; must be >0.0 if specified
+	"dpuY": double,
+
 	// array of layers, ordered from bottommost to topmost
 	"layers": [
 		{
@@ -75,7 +84,7 @@ In either case, check out or download the repo and pick the .dll for the appropr
 
 ## Plugin source code
 
-Naturally, the source code (C#) is provided.
+Naturally, the source code (C#, .NET 4.0 needed) is provided.
 
 Things are kept as simple as possible - there is only one source file (per each version, that is), and it is intended to be built with a simple one-liner, with opening no IDEs and creating no projects nor solutions nor whatsoever else. (You will just need the PDN of an appropriate version installed.) The file `build.bat` / `build_old.bat` should do the trick, although you need to set a PDN_HOME variable. Or just open the .bat and check the required command - it is literally a one-liner.
 

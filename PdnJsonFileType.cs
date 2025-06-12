@@ -62,6 +62,9 @@ namespace PdnJsonFileType
 			PJSFile pjsFile = new PJSFile();
 			pjsFile.width = input.Width;
 			pjsFile.height = input.Height;
+			pjsFile.dpuUnit = input.DpuUnit.ToString();
+			pjsFile.dpuX = input.DpuX;
+			pjsFile.dpuY = input.DpuY;
 
 			foreach (Layer layer in input.Layers)
 			{
@@ -116,6 +119,16 @@ namespace PdnJsonFileType
 				}
 
 				doc = new Document(pjsFile.width, pjsFile.height);
+
+				MeasurementUnit dpuUnit;
+				if (!Enum.TryParse<MeasurementUnit>(pjsFile.dpuUnit, out dpuUnit))
+				{
+					dpuUnit = MeasurementUnit.Inch;
+				}
+
+				doc.DpuUnit = dpuUnit;
+				doc.DpuX = (double)pjsFile.dpuX;
+				doc.DpuY = (double)pjsFile.dpuY;
 
 				foreach (PJSLayer pjsLayer in pjsFile.layers)
 				{
@@ -188,9 +201,20 @@ namespace PdnJsonFileType
 		[DataMember] internal HashSet<String> features = new HashSet<String>();
 		[DataMember] internal int width;
 		[DataMember] internal int height;
+		[DataMember(IsRequired=false)] internal String dpuUnit { get; set; }
+		[DataMember(IsRequired=false)] internal double? dpuX { get; set; }
+		[DataMember(IsRequired=false)] internal double? dpuY { get; set; }
 
 		[DataMember]
 		internal List<PJSLayer> layers = new List<PJSLayer>();
+
+		[System.Runtime.Serialization.OnDeserialized]
+		void OnDeserialized(System.Runtime.Serialization.StreamingContext c)
+		{
+			dpuUnit = (dpuUnit == null ? "Inch" : dpuUnit);
+			dpuX = (dpuX == null ? 96.0 : dpuX);
+			dpuY = (dpuY == null ? 96.0 : dpuY);
+		}
 	}
 
 	internal static class Features
